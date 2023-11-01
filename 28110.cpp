@@ -1,5 +1,5 @@
 /*
- * boj/28110
+ * https://www.acmicpc.net/problem/28110
  * C++
  * 풀이 전략 : 그리디
  * 
