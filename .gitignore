@@ -4,3 +4,4 @@ test
 test.*
 input.txt
 output.txt
+*.dSYM/
