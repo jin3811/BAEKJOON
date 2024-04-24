@@ -1,13 +1,17 @@
 /**
  * boj ranker Jinhan's code
  * https://blog.naver.com/jinhan814/222141831551
+ * 
+ * 기본적으로 20 => 2 2 5 식으로 구함.
+ * 소수만 필요한 경우에는 중복제거를 한번 한다.
+ * 
 */
 
 #include<bits/stdc++.h>
 using namespace std;
 
 using ll = int64_t;
-using ull = uint64_t;
+using ul = uint64_t;
 
 struct Random {
 	mt19937 rd;
@@ -24,7 +28,7 @@ struct Random {
 
 struct MillerRabin {
 	ll Mul(ll x, ll y, ll MOD) {
-		ll ret = x * y - MOD * ull(1.L / MOD * x * y);
+		ll ret = x * y - MOD * ul(1.L / MOD * x * y);
 		return ret + MOD * (ret < 0) - MOD * (ret >= (ll)MOD);
 	}
 	ll _pow(ll x, ll n, ll MOD) {
@@ -85,6 +89,5 @@ struct PollardRho : public MillerRabin {
 
 int main() {
 	ll n; cin >> n;
-    // 20 => 2 2 5 식으로 출력
     for (auto& i : P.Factorize(n)) cout << i << '\n';
 }
