@@ -1,5 +1,5 @@
 /**
- * boj ranker Jinhan's code
+ * ref from boj ranker Jinhan's code
  * https://blog.naver.com/jinhan814/222141831551
  * 
  * 기본적으로 20 => 2 2 5 식으로 구함.
@@ -15,8 +15,7 @@ using ul = uint64_t;
 
 struct Random {
 	mt19937 rd;
-	Random() : rd((unsigned)chrono::steady_clock::now().time_since_epoch().count()) {}
-	Random(int seed) : rd(seed) {}
+	Random(int seed = (unsigned)chrono::steady_clock::now().time_since_epoch().count()) : rd(seed) {}
 	template<typename T = int>
 	T GetInt(T l = 0, T r = 32767) {
 		return uniform_int_distribution<T>(l, r)(rd);
