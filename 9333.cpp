@@ -1,27 +1,26 @@
 #include <bits/stdc++.h>
 #define endl '\n'
 #define FAIL "impossible"
-#define DECIMALERROR 1e-7
 using namespace std;
 using pii = pair<int, int>;
+using ll = long long;
 
-pii
+ll r, b, m;
 
-void sol(unsigned long long b, const long long m, double r) {
-    if (round(b * r / 100 + DECIMALERROR) >= m) {// 이자가 납부금보다 같거나 많으면 이자에 허덕이며 못갚는다.
+void sol() {
+    if (b * r / 100 >= m) {// 이자가 납부금보다 같거나 많으면 이자에 허덕이며 못갚는다.
         cout << FAIL << endl;
         return;
     }
 
-    // unsigned long long rest = b;
+    int year = 0;
 
-    for (int i = 1; i <= 1200; i++) {
-        // rest += (unsigned long long)(rest * r / 100 + 0.5); // 이자 곱하고 반올림
-        // rest -= m; // 상환
-        // if (rest <= 0) {
+    while(++year <= 1200) {
+        b += (b * r / 100 + 50); // 이자 곱하고 반올림
+        b -= m; // 상환
 
         if (b <= 0) {
-            cout << i << endl; // 다 갚았으면 끝
+            cout << year << endl; // 다 갚았으면 끝
             return;
         }
     }
@@ -29,16 +28,14 @@ void sol(unsigned long long b, const long long m, double r) {
 }
 
 int main () {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    cin.tie(0)->sync_with_stdio(false);
     
-    int tc;
-    string b, r, m; // 원금, 이자, 소득
-
-    cin >> tc;
+    int tc, r1, r2, b1, b2, m1, m2;
+    scanf("%d", &tc);
 
     while(tc--) {
-       cin >> r >> b >> m;
-
+       scanf("%d.%d %d.%d %d.%d", &r1, &r2, &b1, &b2, &m1, &m2);
+       r = r1 * 100 + r2; b = b1 * 100 + b2; m = m1 * 100 + m2;
+       sol();
     }
 }
