@@ -18,11 +18,13 @@ void sol() {
 		cout << 0;
 		return;
 	}
-
+	
+	int res = 0, lim = (*sensor.rbegin() - sensor[0]) / k, prev = sensor[0];
 	sort(ALL(sensor));
-	int res = 0, lim = (*sensor.rbegin() - sensor[0]) / k;
+	sensor.erase(unique(ALL(sensor)), sensor.end());
+
 	for (int i = 1; i < n; i++) {
-		
+		if 
 	}
 }
 
