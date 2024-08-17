@@ -62,6 +62,7 @@ public:
 
 	void update(int index, int newNum) {
 		_update(1, origin.size(), 1, index, newNum - origin[index-1]);
+		origin[index-1] = newNum;
 	}
 
 	T rangeSum(int left, int right) {
