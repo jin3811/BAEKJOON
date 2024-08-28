@@ -13,6 +13,9 @@ using namespace std;
 using ul = uint64_t;
 
 ul euler_phi(int n) {
+	// n보다 작은 서로소의 개수이기 때문에 1인 경우에는 자기보다 작은 자연수가 없다.
+    // 그 외의 특수한 경우에는 해당 조건을 지운다.
+    if (n == 1) return 0L; 
 	ul res = n;
 
 	for (ul i = 2; i * i <= n; i++) {
