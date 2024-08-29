@@ -14,8 +14,10 @@ using ul = uint64_t;
 
 ul euler_phi(int n) {
 	// n보다 작은 서로소의 개수이기 때문에 1인 경우에는 자기보다 작은 자연수가 없다.
-    // 그 외의 특수한 경우에는 해당 조건을 지운다.
-    if (n == 1) return 0L; 
+    // n 이하의 서로소를 세는 경우에는 해당 조건을 지운다.
+	// 문제 조건을 잘 확인하고, 아래 두줄의 조건을 수정한다.
+    if (n == 1) return 1ULL; 
+	if (n <= 3) return n - 1ULL;
 	ul res = n;
 
 	for (ul i = 2; i * i <= n; i++) {
