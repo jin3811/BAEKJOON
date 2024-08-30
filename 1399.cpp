@@ -3,98 +3,72 @@
 using namespace std;
 
 int k, m;
-// 북 동 남 서
-int dx[4] = {0, 1, 0, -1};
-int dy[4] = {1, 0, -1, 0};
 
-int dig(unsigned long long x) {
-    if (x < 10) return x;
-    else {
-        int param = 0;
-        while(x) {
-            param += x % 10;
-            x /= 10;
-        }
-        return dig(param);
-    }
-}
+int dig(int base, int exp) {
+	if (exp == 0) return 1;
 
-int get_cycle() {
-    for (int cycle = 2; cycle <= 2 * k; cycle += 2) {
-        int i = 0;
-        int num = 1;
-        vector<int> first, second;
-        
-        for (; i < cycle / 2; i++) {
-            first.push_back(dig(num));
-            num *= m;
-        }
-        for(; i < cycle; i++) {
-            second.push_back(dig(num));
-            num *= m;
-        }
-        if (first == second) return cycle / 2;
-    }
+	int tmp = dig(base, exp / 2) % 9;
+	int res = (tmp * tmp) % 9;
+	if (exp % 2 == 1) res = (res * base) % 9;
+
+	// 자연수의 자릿수의 총합은 절대 0이 될 수 없다.
+	// 9가 모듈러 연산으로 0이 되는 경우밖에 없다.
+	return res ? res : 9; 
 }
 
 void sol() {
-    int gold_num = 1;
-    int go_pos;
+	int go, tx = 0, ty = 0; 
+	int dx[4] = {0, 1, 0, -1};
+	int dy[4] = {1, 0, -1, 0};
+	int cycle = 0;
 
-    int cycle = get_cycle();
-    pair<int, int> treasure = {0, 0};
-    
-    
-    // for(int i = 1; i <= k; i++) {
-    //     go_pos = dig(gold_num);
-    //     gold_num *= m;
-        
-    //     if (i % 4 == 1) {
-    //         treasure.second += go_pos;
-    //     }
-    //     else if (i % 4 == 2) {
-    //         treasure.first += go_pos;
-    //     }
-    //     else if (i % 4 == 3) {
-    //         treasure.second -= go_pos;
-    //     }
-    //     else {
-    //         treasure.first -= go_pos;
-    //     }
-    // }
-    
-    for (int i = 1; i <= k / cycle; i++) {
-        go_pos = dig(gold_num);
-        gold_num *= m;
-        
-        if (i % 4 == 1) {
-            treasure.second += go_pos;
-        }
-        else if (i % 4 == 2) {
-            treasure.first += go_pos;
-        }
-        else if (i % 4 == 3) {
-            treasure.second -= go_pos;
-        }
-        else {
-            treasure.first -= go_pos;
-        }
-    }
-    
-    
-    
-    
-    cout << treasure.first << " " << treasure.second << endl;
+	// 사이클 찾기
+	for(int i = 1; i < k; i++) {
+		if (dig(m, i) % 9 <= 1) {
+			cycle = lcm(4, i);
+			break;	
+		}
+	}
+	if (cycle && cycle < k - 1) { // 사이클이 있다면, 굳이 k번을 반복할 필요없다.
+		for(int i = 1; i <= cycle; i++) { //3, 6일땐 다르게 처리해야함.
+			go = dig(m, i);	
+			tx += dx[i % 4] * go;
+			ty += dy[i % 4] * go;
+		}
+		if (m % 3 != 0) { 
+			tx *= (k - 1) / cycle;
+			ty *= (k - 1) / cycle;
+			for(int i = 1; i <= (k - 1) % cycle; i++) {
+				go = dig(m, i);
+				tx += dx[i % 4] * go;
+				ty += dy[i % 4] * go;
+			}
+		}
+		else {
+			for(int i = 1; i <= (k - 1) % cycle; i++) {
+				tx += dx[i % 4] * 9;
+				ty += dy[i % 4] * 9;
+			}
+		}
+	}
+	else { // 사이클이 없거나, 사이클의 크기가 k이상이라면, k는 O(k)로 처리할수 있을 만큼, 값이 충분히 작다는 뜻이다.
+		for(int i = 1; i < k; i++) {
+			go = dig(m, i);
+			tx += dx[i % 4] * go;
+			ty += dy[i % 4] * go;
+		}
+	}
+
+	// 맨 처음엔 m, k 상관없이 북쪽으로 1만큼 무조건 이동
+	cout << tx << " " << ty + 1 << endl;
 }
 
 int main () {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    
-    int tcase;
-    cin >> tcase;
-    while(tcase--) {
-        cin >> k >> m;
-        sol();
-    }
+	cin.tie(0)->sync_with_stdio(0);
+	int tcase; cin >> tcase;
+	while(tcase--) {
+		cin >> k >> m;
+		m %= 9;
+		sol();
+	}
 }
