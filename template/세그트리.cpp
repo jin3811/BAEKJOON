@@ -8,7 +8,7 @@ class SegTree {
 	vector<T> origin;
 	T* tree;
 
-	int _init(int st, int ed, int cur) {
+	T _init(int st, int ed, int cur) {
 		if (st == ed) {
 			return tree[cur] = origin[st - 1];
 		}
