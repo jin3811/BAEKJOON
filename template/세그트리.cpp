@@ -53,7 +53,9 @@ class SegTree {
 	}
 
 public:
-	SegTree(const vector<T>& container) : init(container) {}
+	SegTree(const vector<T>& container) {
+		init(container);
+	}
 
 	SegTree() {}
 
