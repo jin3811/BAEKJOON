@@ -1,6 +1,10 @@
 /**
+ * 구간 합을 기준으로 구현한 예시이다.
+ * 필요에 따라 구현을 수정해야한다(flag).
+ *
  * 세그트리 사용 예
  * 구간 합 : boj/2042, boj/2268, 
+ * 구간 곱 : 
  * 구간 최대최소 : boj/14438, 
  */
 #include <iostream>
@@ -20,36 +24,37 @@ class SegTree {
 
 		int mid = (st + ed) >> 1;
 
-		// 문제에 따라 해당 부분은 처리를 다르게 해야함(ex. 구간 최대/최소).
+		// flag. 문제에 따라 해당 부분은 처리를 다르게 해야함(ex. 구간 최대/최소).
 		return tree[cur] = _init(st, mid, cur*2) + _init(mid + 1, ed, cur * 2 + 1);
 	}
 
-	void _update(int st, int ed, int cur, int index, int diff) {
-		// 범위 검사
-		if (index < st || index > ed) return;
+	T _update(int st, int ed, int cur, int index, T newVal) {
+		// flag. 범위 검사
+		if (index < st || index > ed) return 0;
 
-		// 값 업데이트
-		tree[cur] += diff;
+		// 리프노드면 수정사항만 적용한다.
+		if (st == ed) {
+			tree[cur] = newVal;
+			return;
+		}
 
-		// 리프노드이면 되돌아간다.
-		if (st == ed) return;
-
-		// 리프노드가 아니면 서브트리로 재귀
+		// flag. 리프노드가 아니면 서브트리로 재귀하며 값을 업데이트
 		int mid = (st + ed) >> 1;
-		_update(st, mid, cur * 2, index, diff);
-		_update(mid + 1, ed, cur * 2 + 1, index, diff);
+		return tree[cur] = _update(st, mid, cur * 2, index, newVal) 
+					+ _update(mid + 1, ed, cur * 2 + 1, index, newVal);
 	}
 
 	T _rangeSum(int st, int ed, int cur, int left, int right) {
-		// 범위를 넘어가면 무시
+		// flag. 범위를 넘어가면 무시
 		if (left > ed || right < st) return 0;
 
 		// 범위 내에 있다면
 		if (left <= st && ed <= right) return tree[cur];
 
-		// 아니면 서브트리 확인
+		// flag.아니면 서브트리 확인
 		int mid = (st + ed) >> 1;
-		return _rangeSum(st, mid, cur * 2, left, right) + _rangeSum(mid + 1, ed, cur * 2 + 1, left, right);
+		return _rangeSum(st, mid, cur * 2, left, right) +
+				_rangeSum(mid + 1, ed, cur * 2 + 1, left, right);
 	}
 
 public:
