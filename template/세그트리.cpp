@@ -30,7 +30,7 @@ class SegTree {
 
 	T _update(int st, int ed, int cur, int index, T newVal) {
 		// flag. 범위 검사
-		if (index < st || index > ed) return 0;
+		if (index < st || index > ed) return tree[cur];
 
 		// 리프노드면 수정사항만 적용한다.
 		if (st == ed) {
