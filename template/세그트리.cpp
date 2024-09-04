@@ -9,13 +9,13 @@
 
 template<class T>
 class SegTree {
-	size_t len = 1;
-	vector<T> origin;
+	size_t len;
+	size_t elemCnt;
 	vector<T> tree;
 
-	T _init(int st, int ed, int cur) {
+	T _init(int st, int ed, int cur, const vector<T>& container) {
 		if (st == ed) {
-			return tree[cur] = origin[st - 1];
+			return tree[cur] = container[st - 1];
 		}
 
 		int mid = (st + ed) >> 1;
@@ -58,24 +58,21 @@ public:
 	SegTree() {}
 
 	void init(const vector<T>& container) {
-		// 원본 저장
-		origin = container;
-
+		elemCnt = container.size();
 		// 트리 사이즈 구해서 할당하기
 		len = 1UL << (int)ceil(log2(container.size())) + 1;
 		tree = vector<T>(len + 1);
 
 		// 트리 초기화
-		_init(1, origin.size(), 1);
+		_init(1, elemCnt, 1, container);
 	}
 
-	void update(int index, int newNum) {
-		_update(1, origin.size(), 1, index, newNum - origin[index-1]);
-		origin[index-1] = newNum;
+	void update(int index, T newVal) {
+		_update(1, elemCnt, 1, index, newVal);
 	}
 
 	T rangeSum(int left, int right) {
-		return _rangeSum(1, origin.size(), 1, left, right);
+		return _rangeSum(1, elemCnt, 1, left, right);
 	}
 
 	void print() { 
