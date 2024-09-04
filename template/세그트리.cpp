@@ -48,7 +48,11 @@ class SegTree {
 	}
 
 public:
-	SegTree(const vector<T>& container) {
+	SegTree(const vector<T>& container) : init(container) {}
+
+	SegTree() {}
+
+	void init(const vector<T>& container) {
 		// 원본 저장
 		origin = container;
 
