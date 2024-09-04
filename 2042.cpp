@@ -5,59 +5,78 @@ using ll = long long;
 
 template<class T>
 class SegTree {
-	size_t len = 1;
-	vector<T> origin;
-	T* tree;
+	size_t len;
+	size_t elemCnt;
+	vector<T> tree;
 
-	T _init(int st, int ed, int cur) {
+	T _init(int st, int ed, int cur, const vector<T>& container) {
 		if (st == ed) {
-			return tree[cur] = origin[st - 1];
+			return tree[cur] = container[st - 1];
 		}
+
 		int mid = (st + ed) >> 1;
-		return tree[cur] = _init(st, mid, cur*2) + _init(mid + 1, ed, cur * 2 + 1);
+
+		// flag. 문제에 따라 해당 부분은 처리를 다르게 해야함(ex. 구간 최대/최소).
+		return tree[cur] = _init(st, mid, cur*2, container) + _init(mid + 1, ed, cur * 2 + 1, container);
 	}
 
-	void _update(int st, int ed, int cur, int index, T diff) {
-		if (index < st || index > ed) return;
+	T _update(int st, int ed, int cur, int index, T newNum) {
+		// flag. 범위 검사
+		if (index < st || index > ed) return tree[cur];
 
-		tree[cur] += diff;
+		// 리프노드면 수정사항만 적용한다.
+		if (st == ed) {
+			tree[cur] = newNum;
+			return tree[cur];
+		}
 
-		if (st == ed) return;
-
+		// flag. 리프노드가 아니면 서브트리로 재귀하며 값을 업데이트
 		int mid = (st + ed) >> 1;
-		_update(st, mid, cur * 2, index, diff);
-		_update(mid + 1, ed, cur * 2 + 1, index, diff);
+		return tree[cur] = _update(st, mid, cur * 2, index, newNum) 
+					+ _update(mid + 1, ed, cur * 2 + 1, index, newNum);
 	}
 
 	T _rangeSum(int st, int ed, int cur, int left, int right) {
+		// flag. 범위를 넘어가면 무시
 		if (left > ed || right < st) return 0;
 
+		// 범위 내에 있다면
 		if (left <= st && ed <= right) return tree[cur];
 
+		// flag.아니면 서브트리 확인
 		int mid = (st + ed) >> 1;
-		return _rangeSum(st, mid, cur * 2, left, right) + _rangeSum(mid + 1, ed, cur * 2 + 1, left, right);
+		return _rangeSum(st, mid, cur * 2, left, right) +
+				_rangeSum(mid + 1, ed, cur * 2 + 1, left, right);
 	}
 
 public:
 	SegTree(const vector<T>& container) {
-		origin = container;
+		init(container);
+	}
 
+	SegTree() {}
+
+	void init(const vector<T>& container) {
+		elemCnt = container.size();
+		// 트리 사이즈 구해서 할당하기
 		len = 1UL << (int)ceil(log2(container.size())) + 1;
-		tree = new T[len + 1];
+		tree = vector<T>(len + 1);
 
-		_init(1, origin.size(), 1);
+		// 트리 초기화
+		_init(1, elemCnt, 1, container);
 	}
 
 	void update(int index, T newNum) {
-		_update(1, origin.size(), 1, index, newNum - origin[index-1]);
-		origin[index-1] = newNum;
+		_update(1, elemCnt, 1, index, newNum);
 	}
 
 	T rangeSum(int left, int right) {
-		return _rangeSum(1, origin.size(), 1, left, right);
+		return _rangeSum(1, elemCnt, 1, left, right);
 	}
 
-	~SegTree() { delete[] tree; }
+	void print() { 
+		for (int i = 1; i <= len; i++) cout << tree[i] << ' ';
+	}
 };
 
 int n, m, k;
