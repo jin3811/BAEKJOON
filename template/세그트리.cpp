@@ -25,7 +25,7 @@ class SegTree {
 		int mid = (st + ed) >> 1;
 
 		// flag. 문제에 따라 해당 부분은 처리를 다르게 해야함(ex. 구간 최대/최소).
-		return tree[cur] = _init(st, mid, cur*2) + _init(mid + 1, ed, cur * 2 + 1);
+		return tree[cur] = _init(st, mid, cur*2, container) + _init(mid + 1, ed, cur * 2 + 1, container);
 	}
 
 	T _update(int st, int ed, int cur, int index, T newVal) {
