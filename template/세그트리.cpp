@@ -35,7 +35,7 @@ class SegTree {
 		// 리프노드면 수정사항만 적용한다.
 		if (st == ed) {
 			tree[cur] = newVal;
-			return;
+			return tree[cur];
 		}
 
 		// flag. 리프노드가 아니면 서브트리로 재귀하며 값을 업데이트
