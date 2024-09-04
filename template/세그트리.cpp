@@ -1,3 +1,8 @@
+/**
+ * 세그트리 사용 예
+ * 구간 합 : boj/2042, boj/2268, 
+ * 구간 최대최소 : boj/14438, 
+ */
 #include <iostream>
 #include <cmath>
 #include <vector>
