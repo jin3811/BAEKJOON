@@ -81,5 +81,4 @@ public:
 	void print() { 
 		for (int i = 1; i <= len; i++) cout << tree[i] << ' ';
 	}
-	~SegTree() { delete[] tree; }
 };
