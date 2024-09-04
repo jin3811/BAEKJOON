@@ -6,7 +6,7 @@ template<class T>
 class SegTree {
 	size_t len = 1;
 	vector<T> origin;
-	T* tree;
+	vector<T> tree;
 
 	T _init(int st, int ed, int cur) {
 		if (st == ed) {
@@ -54,7 +54,7 @@ public:
 
 		// 트리 사이즈 구해서 할당하기
 		len = 1UL << (int)ceil(log2(container.size())) + 1;
-		tree = new T[len + 1];
+		tree = vector<T>(len + 1);
 
 		// 트리 초기화
 		_init(1, origin.size(), 1);
