@@ -14,17 +14,12 @@ void input() {
 	for(int x = 1; x <= n; x++) {
 		for(int y = 1; y <= n; y++) {
 			cin >> table[x][y];
+			table[x][y] += table[x][y-1];
 		}
 	}
 
 	for(auto& [x1, y1, x2, y2] : query) {
 		cin >> x1 >> y1 >> x2 >> y2;
-	}
-
-	for(auto& row : table) {
-		for(int i = 1; i <= n; i++) {
-			row[i] += row[i - 1];
-		}
 	}
 }
 
