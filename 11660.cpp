@@ -1,3 +1,7 @@
+/**
+ * boj/11660
+ * 입력받은 2차원 배열의 각 행을 누적합으로 변환한 후, 쿼리로 지정된 영역을 누적합 연산으로 처리
+ */
 #include <bits/stdc++.h>
 #define endl '\n'
 using namespace std;
