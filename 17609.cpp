@@ -4,16 +4,16 @@ using namespace std;
 
 string str;
 
-bool isPalindrome() {
-	for(int i = 0; i < str.length() / 2; i++) {
-		if (str[i] != str[str.length() - 1 - i]){
-			return false;
-		}
-	}
-	return true;
-}
+// bool isPalindrome() {
+// 	for(int i = 0; i < str.length() / 2; i++) {
+// 		if (str[i] != str[str.length() - 1 - i]){
+// 			return false;
+// 		}
+// 	}
+// 	return true;
+// }
 
-bool isPseudoPaildrome(int i = 0, int l = 0, int r = 1, bool del_flag = false) {
+bool isPseudoPaildrome(bool del_flag = false, int i = 0, int l = 0, int r = 1) {
 	for(; i < str.length() / 2; i++) {
 		if (str[i + l] != str[str.length() - r - i]){
 			if (del_flag) {
@@ -29,8 +29,8 @@ bool isPseudoPaildrome(int i = 0, int l = 0, int r = 1, bool del_flag = false) {
 				// else {
 				// 	return false;
 				// }
-				return isPseudoPaildrome(i, l+1, r, true) ||
-						isPseudoPaildrome(i, l, r+1, true);
+				return isPseudoPaildrome(true, i, l+1, r) ||
+						isPseudoPaildrome(true, i, l, r+1);
 			}
 		}
 	}
@@ -39,7 +39,8 @@ bool isPseudoPaildrome(int i = 0, int l = 0, int r = 1, bool del_flag = false) {
 
 void sol() {
 	int r;
-	if (isPalindrome()) {
+	// if (isPalindrome()) {
+	if (isPseudoPaildrome(true)) {
 		r = 0;
 	}
 	else if (isPseudoPaildrome()) {
