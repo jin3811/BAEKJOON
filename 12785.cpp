@@ -4,30 +4,29 @@ using namespace std;
 
 int w, h, x, y;
 
-int comb(int a, int b) { // a+bCa % mod
-	int n = a + b;
-	int r = min(a, b);
+int memo[500][500];
 
-	int result = 1;
-	int temp = 1;
-
-	for (int i = n; i > n - r; i--) {
-		result *= i;
-		result /= temp++;
-		result %= mod;
+int comb(int n, int r) {
+    if (memo[n][r]) {
+		return memo[n][r] % mod;
 	}
-	return result % mod;
-}	
-
-int sol() {
-	int h2t = comb(x - 1, y - 1);
-	int t2s = comb(w - x, h - y);
-	return (h2t * t2s) % mod;
+    else{
+        memo[n][r] = ((comb(n - 1, r - 1) % mod) + (comb(n - 1, r) % mod)) % mod;
+        return memo[n][r];
+    }
+}
+void sol() {
+	for(int i = 0; i < 500; i++) {
+        memo[i][0] = memo[i][i] = 1;
+    }
+	int t2s = comb(w + h - x - y, min(w - x, h - y));
+	int h2t = comb(x + y - 2, min(x - 1, y - 1));
+	long long ans = (1LL * h2t * t2s) % mod;
+	cout << ans;
 }
 
 int main () {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
+	cin.tie(nullptr)->sync_with_stdio(false);
 	cin >> w >> h >> x >> y;
-	cout << sol();
+	sol();
 }
