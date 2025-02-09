@@ -1,60 +1,53 @@
 #include <bits/stdc++.h>
+#define ALL(X) X.begin(), X.end()
 using namespace std;
 
-int m, n;
-vector<vector<int>> tomato;
-queue<tuple<int,int,int>> q;
+typedef struct Disjoint_set{
+	int* tree;
+	Disjoint_set(int n) {
+		tree = new int[n + 1];
+		memset(tree, 0xff, sizeof(int) * (n + 1));
+	}
+
+	void merge(int a, int b) {
+		a = find(a), b = find(b);
+		if (a == b) return;
+		tree[b] = a;
+	}
+
+	int find(int a) {
+		if (tree[a] < 0) return a;
+		return tree[a] = find(tree[a]);
+	}
+
+	~Disjoint_set() { delete[] tree; }
+};
+
+int v, e;
+vector<tuple<int,int,int>> path;
 
 void input() {
-	cin >> m >> n;
-	tomato.resize(n, vector<int>(m));
-
-	for(int r = 0; r < n; r++) {
-		for(int c = 0; c < m; c++) {
-			cin >> tomato[r][c];
-			if (tomato[r][c] == 1) {
-				q.emplace(0, r, c);
-				tomato[r][c] = -1;
-			}
-		}
-	}
-}
-
-void bfs() {
-	int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};
-
-	while(!q.empty()) {
-		auto [day, cr, cc] = q.front(); q.pop();
-
-		for(int d = 0; d < 4; d++) {
-			int nr = cr + dy[d], nc = cc + dx[d];
-
-			if (nr < 0 || nr >= n || nc < 0 || nc >= m || tomato[nr][nc] == -1) {
-				continue;
-			}
-
-			if (tomato[nr][nc] == 0 || tomato[nr][nc] > day + 1) {
-				tomato[nr][nc] = day + 1;
-				q.emplace(day + 1, nr, nc);
-			}
-		}
-	}
+	cin >> v >> e;
+	path.resize(e);
+	for(auto& [d, a, b] : path) cin >> a >> b >> d;
 }
 
 void sol() {
-	int ans = 0;
+	Disjoint_set ds(v);
+	int edge = 0, answer = 0;
 
-	bfs();
-	for(auto& row : tomato) {
-		for(int& t : row) {
-			if (!t) {
-				cout << -1;
-				return;
-			}
-			ans = max(ans, t);
+	sort(ALL(path));
+	for(auto& [dist, st, ed] : path) {
+		if (edge == v - 1) break;
+
+		int rst = ds.find(st), red = ds.find(ed);
+		if (rst + red == -2 || rst != red) {
+			answer += dist;
+			edge++;
+			ds.merge(st, ed);
 		}
 	}
-	cout << ans;
+	cout << answer;
 }
 
 int main() {
