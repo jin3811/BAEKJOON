@@ -17,7 +17,7 @@ void sol() {
 
 	for(auto& [t, a, h] : dungeon) {
 		if (t == 1) {
-			cur_hp -= a * (h / atk + (h % atk ? 1 : 0) - 1);
+			cur_hp -= a * (h / atk - (h % atk ? 0 : 1));
 		}
 		else {
 			atk += a;
