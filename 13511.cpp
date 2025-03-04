@@ -12,7 +12,7 @@
 #define endl '\n'
 using namespace std;
 using ll = long long;
-#define MAX_A 4 // log(max(n)) = log(100k) = 17이니 여유롭게 20으로 설정
+#define MAX_A 20 // log(max(n)) = log(100k) = 17이니 여유롭게 20으로 설정
 
 int n,m;
 vector<vector<pair<int,ll>>> tree, graph;
