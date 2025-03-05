@@ -34,7 +34,7 @@ int build_tree_post_in(int l, int r) {
 	if (l >= r) return 0;
 
 	int root = *post.rbegin(); post.pop_back();
-	int idx = distance(in.begin(), find(in.begin() + l, in.begin() + r + 1, root));
+	int idx = distance(in.begin(), find(in.begin() + l, in.begin() + r, root));
 	if (idx == n) return 0;
 	
 	auto& [cl, cr] = tree[root];
