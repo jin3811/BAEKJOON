@@ -1,4 +1,5 @@
 /**
+ * 재귀 방식의 세그먼트 트리 구현체
  * 구간 합을 기준으로 구현한 예시이다.
  * 필요에 따라 구현을 수정해야한다(flag).
  *
@@ -89,7 +90,13 @@ public:
 };
 
 /**
- * Merge Sort Tree
+ * 비재귀 방식의 세그먼트 트리
+ */
+
+// TODO : 비재귀 구현
+
+/**
+ * 재귀 방식 머지 소트 트리
  * 
  * 세그먼트 트리에 머지소트를 결합한 자료구조
  */
@@ -98,7 +105,24 @@ class MSTree {
 	size_t len, elemCnt;
 	vector<vector<T>> tree;
 
+    void _init(int st, int ed, int cur, const vector<T>& container) {
+        if (st == ed) {
+            tree[cur].push_back(container[st - 1]);
+            return;
+        }
+
+        int mid = (st + ed) / 2;
+        int lnode = cur * 2;
+        int rnode = cur * 2 + 1;
+        _init(st, mid, lnode, container);
+        _init(mid + 1, ed, rnode, container);
+
+        tree[cur].resize(tree[lnode].size() + tree[rnode].size());
+        merge(ALL(tree[lnode]), ALL(tree[rnode]), tree[cur].begin());
+    }
+
 	int _range_greater(int st, int ed, int cur, int left, int right, int k) {
+		// 범위 밖이면 제외
 		if (left > ed || right < st) return 0;
 
 		// 범위 내에 있다면
@@ -106,9 +130,56 @@ class MSTree {
 			return tree[cur].end() - upper_bound(tree[cur].begin(), tree[cur].end(), k); 
 		}
 
-		// flag.아니면 서브트리 확인
+		// 아니면 서브트리 확인
 		int mid = (st + ed) >> 1;
 		return _range_greater(st, mid, cur * 2, left, right, k) + _range_greater(mid + 1, ed, cur * 2 + 1, left, right, k);
+	}
+
+public:
+	MSTree(const vector<T>& container) {
+		init(container);
+	}
+
+	void init(const vector<T>& container) {
+		elemCnt = container.size();
+		// 트리 사이즈 구해서 할당하기
+		int height = (int)ceil(log2(elemCnt));
+		len = 1UL << height + 1;
+		tree.resize(len);
+
+		// 트리 초기화
+		_init(1, elemCnt, 1, container);
+	}
+
+	int range_greater(int i, int j, int k) {
+		return _range_greater(1, elemCnt, 1, i, j, k);
+	}
+};
+
+/**
+ * 비재귀 방식 머지 소트 트리
+ * 
+ * 아직 구현 안됨
+ */
+
+template<class T>
+class MSTree {
+	size_t len, elemCnt;
+	vector<vector<T>> tree;
+
+	int _range_greater(int st, int ed, int cur, int left, int right, int k) {
+		// if (left > ed || right < st) return 0;
+
+		// // 범위 내에 있다면
+		// if (left <= st && ed <= right) {
+		// 	return tree[cur].end() - upper_bound(tree[cur].begin(), tree[cur].end(), k); 
+		// }
+
+		// // flag.아니면 서브트리 확인
+		// int mid = (st + ed) >> 1;
+		// return _range_greater(st, mid, cur * 2, left, right, k) + _range_greater(mid + 1, ed, cur * 2 + 1, left, right, k);
+
+		// TODO : 구현하기. 위의 주석은 비재귀저장방식에 맞추기 위해 작성한 재귀적 방식
 	}
 
 public:
@@ -134,6 +205,7 @@ public:
 	}
 
 	int range_greater(int i, int j, int k) {
-		return _range_greater(1, len/2, 1, i, j, k);
+		// return _range_greater(1, len/2, 1, i, j, k);
+		// TODO : 구현하기. 위의 주석은 비재귀저장방식에 맞추기 위해 작성한 재귀적 방식
 	}
 };
