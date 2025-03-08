@@ -67,8 +67,8 @@ public:
 	void init(const vector<T>& container) {
 		elemCnt = container.size();
 		// 트리 사이즈 구해서 할당하기
-		len = 1UL << (int)ceil(log2(container.size())) + 1;
-		tree = vector<T>(len + 1);
+		len = 1UL << (int)ceil(log2(this->elemCnt)) + 1;
+		tree = vector<T>(len);
 
 		// 트리 초기화
 		_init(1, elemCnt, 1, container);
