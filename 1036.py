@@ -19,7 +19,6 @@ for num in nums:
 		if b in g : g[b] += 36**n
 		else : g[b] = 36**n
 
-nums = sorted(g.items(), key=lambda x : x[1], reverse=True)
 nums = sorted(g.items(), key=lambda x : (tmp.find(x[0]) - 35) * x[1])
 
 n = 0
