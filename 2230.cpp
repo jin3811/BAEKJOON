@@ -27,7 +27,7 @@ void sol2() {
 	int answer = INT32_MAX;
 	for(auto iter = v.begin(); iter != v.end(); ++iter) {
 		auto k = lower_bound(iter, v.end(), *iter+m);
-		if(k == v.end()) continue;
+		if(k == v.end()) break;
 		answer = min(*k-*iter, answer);
 	}
 	cout << answer;
