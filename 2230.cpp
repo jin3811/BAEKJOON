@@ -14,9 +14,9 @@ void input() {
 
 void sol() {
 	int l = 0, r = 0, answer = INT32_MAX, diff = 0;
-	while(1) {
-		if (diff > m) diff = v[r] - v[++l];
-		else if (r == n - 1 && diff <= m) break;
+	while(l <= r) {
+		if (diff >= m) diff = v[r] - v[++l];
+		else if (r == n - 1 && diff < m) break;
 		else diff = v[++r] - v[l];
 		if (diff >= m) answer = min(answer, diff);
 	}
