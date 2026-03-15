@@ -8,8 +8,6 @@ ESC^2(x) = ESC^1(x) + (e^x)cos(2x) - 2(e^x)sin(2x)
          = ESC^0(x) + (e^x)cos(2x) + (e^x)cos(2x) - 4ESC^0(x)
 		 = -3ESC^0(x) + 2(e^x)cos(2x)
 """
-ans = [1, 1]
-for _ in range(1, int(input())):
-	c, a = ans
-	ans = [c - 4*a, c+a]
-print(ans[0])
+a,c = 1,1
+for _ in range(1, int(input())): a,c = a+c, c-4*a
+print(c)
