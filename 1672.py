@@ -3,12 +3,7 @@ I=lambda:sys.stdin.readline().strip()
 
 base = {"A" : 0, "G" : 1, "C" : 2, "T" : 3}
 
-decode = [
-	["A", "C", "A", "G"],
-	["C", "G", "T", "A"],
-	["A", "T", "C", "G"],
-	["G", "A", "G", "T"]
-]
+decode = ["ACAG","CGTA","ATCG","GAGT"]
 
 n = int(I())-2
 nuc = [i for i in I()]
