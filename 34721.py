@@ -1,0 +1,1 @@
+print(int(input())*"I love DGU\n")
