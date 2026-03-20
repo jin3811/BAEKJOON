@@ -1,25 +1,37 @@
 import sys
 
-p = list(range(317))
-p[0] = p[1] = 0
-for i in range(2, int(len(p) ** 0.5) + 10):
-	if p[i] :
-		j = 2
-		while i * j < len(p):
-			p[i*j] = 0
-			j += 1
-p = list(filter(lambda x : x, p))
+MAX = 10**5+1
 
-def under_prime(x) :
-	if x in p : return False
-	ans = 0
-	for i in range(2, int(x ** 0.5) + 1):
-		if x % i == 0:
-			while x % i == 0:
-				ans += 1
-				x //= i
-	if x > 1: ans += 1
-	return ans in p
+lpf = [0] * MAX
+prime = []
+
+for q in range(2, MAX):
+	if lpf[q] == 0:
+		lpf[q] = q
+		prime.append(q)
+
+	for p in prime :
+		if q*p >= MAX: break
+		lpf[q*p] = p
+		if q % p == 0: break
+
+dp = [-1] * MAX
+def up(x) :
+	if lpf[x] == x: 
+		dp[x] = 1
+		return dp[x]
+
+	if dp[x] != -1:
+		return dp[x]
+
+	dp[x] = up(x//lpf[x]) + 1
+	return dp[x]
 
 a, b = map(int,sys.stdin.readline().strip().split())
-print(len(list(filter(lambda x : under_prime(x), range(a, b+1)))))
+
+ans = 0
+for i in range(a, b + 1):
+	fac = up(i)
+	if lpf[fac] == fac:
+		ans += 1
+print(ans)
