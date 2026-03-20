@@ -1,6 +1,7 @@
 """
 - 일반적인 에라토스테네스의 체
 - 아이디어도 간단하고, 구현도 빠르지만, 같은 합성수(ex. 210 = 2*3*5*7)를 여러번 반복 방문하기에 조금 비효율적
+- 짝수를 배제하고 탐색하거나(어짜피 2 말곤 다 합성수니까), wheel-factorization 기법(probable test)을 사용하여 최적화하기도 한다.
 - Time Complexity = O(NloglogN)
 """
 def eratos_seive():
@@ -8,7 +9,7 @@ def eratos_seive():
     seive = [1] * MAX # 체
     seive[0] = seive[1] = 0
 
-    for i in range(2, MAX):
+    for i in range(i*i, MAX, i):
         if seive[i]:
             j = 2
             while i * j < MAX:
