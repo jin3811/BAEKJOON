@@ -1,0 +1,1 @@
+print("D2" if input().lower().find("d2") + 1 else "unrated")
